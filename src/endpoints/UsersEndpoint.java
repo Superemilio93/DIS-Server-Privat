@@ -1,6 +1,4 @@
-package endpoints; /**
- * Created by mortenlaursen on 09/10/2016.
- */
+package endpoints;
 
 import Encrypters.*;
 import com.google.gson.Gson;
@@ -51,7 +49,6 @@ public class UsersEndpoint  {
     @Produces("application/json")
     @GET
     public Response get(@HeaderParam("authorization") String authToken, @PathParam("id") int userId) throws SQLException {
-
         User user = tokenController.getUserFromTokens(authToken);
 
         if (user != null){
@@ -77,7 +74,6 @@ public class UsersEndpoint  {
     @Produces("application/json")
 
     public Response edit(@HeaderParam("authorization") String authToken, @PathParam("Id") int id, String data) throws SQLException {
-
         User user = tokenController.getUserFromTokens(authToken);
 
         if (user != null){
@@ -101,17 +97,17 @@ public class UsersEndpoint  {
                         .entity("{\"message\":\"failed. No such user\"}")
                         .build();
             }
-
-        }else return Response.status(400).entity("{\"message\":\"failed\"}").build();
-
-
+        }
+        else return Response.status(400).entity("{\"message\":\"failed\"}").build();
     }
+
+
 
     @POST
     @Produces("application/json")
     public Response create(String data) throws Exception {
-        String s = new Gson().fromJson(data,String.class);
-        String decrypt = Crypter.encryptDecryptXOR(s);
+        String decrypt = Crypter.encryptDecryptXOR(data);
+
         if (controller.addUser(decrypt)) {
             //demo to check if it returns this on post.
             return Response
@@ -119,7 +115,10 @@ public class UsersEndpoint  {
                     .entity("{\"message\":\"Success! User added\"}")
                     .build();
         }
-        else return Response.status(400).entity("{\"message\":\"failed\"}").build();
+        else return Response
+                .status(400)
+                .entity("{\"message\":\"failed\"}")
+                .build();
     }
 
     @Path("/{id}")
@@ -142,22 +141,20 @@ public class UsersEndpoint  {
     @Path("/login")
     @Produces("application/json")
     public Response login(String data) throws SQLException {
-        String decrypt = Crypter.encryptDecryptXOR(data); //Fjernes når din klient krypterer.
-      //  decrypt = Crypter.encryptDecryptXOR(decrypt);
-
+        String decrypt = Crypter.encryptDecryptXOR(data);
         UserLogin userLogin = new Gson().fromJson(decrypt, UserLogin.class);
 
         String token = tokenController.authenticate(userLogin.getUsername(), userLogin.getPassword());
 
         if (token != null) {
             //demo to check if it returns this on post.
-            return Response
-                .status(200)
-                .entity(new Gson().toJson(token))
-                .build();
+             return Response
+                     .status(200)
+                     .entity(new Gson().toJson(token))
+                     .build();
         } else return Response
-            .status(401)
-            .build();
+                .status(401)
+                .build();
     }
 
     @POST

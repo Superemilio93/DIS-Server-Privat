@@ -80,6 +80,9 @@ public class DBConnector {
                             resultSet.getInt("Usertype")
                     );
 
+                   // User user = new User();
+                   // user.setEmail(resultSet.getString("Email"));
+
                     results.add(users);
 
                 } catch (Exception e) {
@@ -98,7 +101,7 @@ public class DBConnector {
         ResultSet resultSet = null;
 
         try {
-            PreparedStatement getUser = conn.prepareStatement("SELECT * FROM Users WHERE UserID=?");
+            PreparedStatement getUser = conn.prepareStatement("SELECT * FROM Users WHERE UserID=? AND Usertype != 1");
             getUser.setInt(1, id);
             resultSet = getUser.executeQuery();
 
@@ -131,15 +134,14 @@ public class DBConnector {
     public boolean editUser(int id, String data) throws SQLException {
         User u = new Gson().fromJson(data,User.class);
         PreparedStatement editUserStatement = conn
-                .prepareStatement("UPDATE Users SET First_Name = ?, Last_Name = ?, Username = ?, Email = ?, Usertype = ? WHERE userID =?");
+                .prepareStatement("UPDATE Users SET First_Name = ?, Last_Name = ?, Username = ?, Email = ? WHERE userID =?");
 
         try {
             editUserStatement.setString(1, u.getFirstName());
             editUserStatement.setString(2, u.getLastName());
             editUserStatement.setString(3, u.getUsername());
             editUserStatement.setString(4, u.getEmail());
-            editUserStatement.setInt(5, u.getUserType());
-            editUserStatement.setInt(6, id);
+            editUserStatement.setInt(5, id);
 
             editUserStatement.executeUpdate();
         } catch (SQLException e) {
@@ -159,7 +161,7 @@ public class DBConnector {
             addUserStatement.setString(3, u.getUsername());
             addUserStatement.setString(4, u.getEmail());
             addUserStatement.setString(5, u.getPassword());
-            addUserStatement.setInt(6, u.getUserType());
+            addUserStatement.setInt(6, 0);
 
             addUserStatement.execute();
         } catch (SQLException e) {

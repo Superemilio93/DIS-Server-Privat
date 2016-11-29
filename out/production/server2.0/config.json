@@ -1,7 +1,0 @@
-{
-        "dbUserName": "root",
-        "dbPassword": "",
-        "dbUrl": "localhost",
-        "dbPort": "3306",
-        "dbName": "local"
-        }
