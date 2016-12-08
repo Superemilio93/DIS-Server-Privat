@@ -1,6 +1,7 @@
 package controllers;
 
 import Encrypters.*;
+import com.google.gson.JsonObject;
 import database.DBConnector;
 import model.User;
 
@@ -15,25 +16,28 @@ public class TokenController {
 
     DBConnector db = new DBConnector();
 
-    public String authenticate(String username, String password) throws SQLException {
+    public JsonObject authenticate(String username, String password) throws SQLException {
         // Authenticate the user using the credentials provided
+        JsonObject jsonObject = new JsonObject();
 
         String token;
+        User foundUser = db.authenticate(username, Digester.hashWithSalt(password));
 
-        User foundUser = db.authenticate(username, password);
         if (foundUser != null) {
 
             token = Crypter.buildToken("abcdefghijklmnopqrstuvxyz1234567890@&%!?", 25);
 
             db.addToken(token, foundUser.getUserID());
 
+            jsonObject.addProperty("token", token);
+            jsonObject.addProperty("usertype", foundUser.getUserType());
+
+
         } else {
             token = null;
         }
         //Retunerer en access token til klienten.
-        return token;
-
-
+        return jsonObject;
     }
 
     public User getUserFromTokens(String token) throws SQLException {

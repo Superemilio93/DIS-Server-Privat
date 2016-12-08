@@ -20,7 +20,7 @@ public class DBConnector {
      */
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://" + Config.getDbUrl() + ":" + Config.getDbPort() + "/" + Config.getDbName();
+    static final String DB_URL = "jdbc:mysql://" + Config.getDbUrl() + ":" + Config.getDbPort() + "/" + Config.getDbName()+"?useSSL=false";
 
     //  Database credentials
     static final String USER = Config.getDbUserName();
@@ -492,6 +492,7 @@ public class DBConnector {
                 try {
                     userFound = new User();
                     userFound.setUserID(resultSet.getInt("UserID"));
+                    userFound.setUserType(resultSet.getInt("Usertype"));
 
                 } catch (SQLException e) {
 

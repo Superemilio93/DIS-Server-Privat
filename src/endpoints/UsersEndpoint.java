@@ -2,6 +2,7 @@ package endpoints;
 
 import Encrypters.*;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import controllers.TokenController;
 import controllers.UserController;
 import model.User;
@@ -144,13 +145,13 @@ public class UsersEndpoint  {
         String decrypt = Crypter.encryptDecryptXOR(data);
         UserLogin userLogin = new Gson().fromJson(decrypt, UserLogin.class);
 
-        String token = tokenController.authenticate(userLogin.getUsername(), userLogin.getPassword());
+        JsonObject loginObject = tokenController.authenticate(userLogin.getUsername(), userLogin.getPassword());
 
-        if (token != null) {
+        if (loginObject != null) {
             //demo to check if it returns this on post.
              return Response
                      .status(200)
-                     .entity(new Gson().toJson(token))
+                     .entity(new Gson().toJson(Crypter.encryptDecryptXOR(new Gson().toJson(loginObject))))
                      .build();
         } else return Response
                 .status(401)
