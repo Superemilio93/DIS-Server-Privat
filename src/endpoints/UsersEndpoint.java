@@ -77,7 +77,7 @@ public class UsersEndpoint  {
     public Response edit(@HeaderParam("authorization") String authToken, @PathParam("Id") int id, String data) throws SQLException {
         User user = tokenController.getUserFromTokens(authToken);
 
-        if (user != null){
+        if (user != null && user.getUserType() == 1 || user != null && user.getUserID() == id){
             String s = new Gson().fromJson(data,String.class);
             String decrypt = Crypter.encryptDecryptXOR(s);
             if (controller.getUser(id) != null) {
@@ -128,7 +128,7 @@ public class UsersEndpoint  {
 
         User user = tokenController.getUserFromTokens(authToken);
 
-        if (user != null){
+        if (user != null && user.getUserType() == 1 || user != null && user.getUserID() == userId){
             if(controller.deleteUser(userId)) {
                 return Response.status(200).entity("{\"message\":\"Success! User deleted\"}").build();
             }
