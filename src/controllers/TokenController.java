@@ -31,10 +31,9 @@ public class TokenController {
 
             jsonObject.addProperty("token", token);
             jsonObject.addProperty("usertype", foundUser.getUserType());
-
-
+            jsonObject.addProperty("userid", foundUser.getUserID());
         } else {
-            token = null;
+            jsonObject = null;
         }
         //Retunerer en access token til klienten.
         return jsonObject;

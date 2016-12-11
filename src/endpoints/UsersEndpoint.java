@@ -78,8 +78,7 @@ public class UsersEndpoint  {
         User user = tokenController.getUserFromTokens(authToken);
 
         if (user != null && user.getUserType() == 1 || user != null && user.getUserID() == id){
-            String s = new Gson().fromJson(data,String.class);
-            String decrypt = Crypter.encryptDecryptXOR(s);
+            String decrypt = Crypter.encryptDecryptXOR(data);
             if (controller.getUser(id) != null) {
                 if (controller.editUser(id, decrypt)) {
                     return Response

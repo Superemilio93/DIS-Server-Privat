@@ -1,5 +1,6 @@
 package database;
 
+import Encrypters.Digester;
 import com.google.gson.Gson;
 import config.Config;
 import model.Book;
@@ -134,14 +135,15 @@ public class DBConnector {
     public boolean editUser(int id, String data) throws SQLException {
         User u = new Gson().fromJson(data,User.class);
         PreparedStatement editUserStatement = conn
-                .prepareStatement("UPDATE Users SET First_Name = ?, Last_Name = ?, Username = ?, Email = ? WHERE userID =?");
+                .prepareStatement("UPDATE Users SET First_Name = ?, Last_Name = ?, Username = ?, Password = ?, Email = ? WHERE userID =?");
 
         try {
             editUserStatement.setString(1, u.getFirstName());
             editUserStatement.setString(2, u.getLastName());
             editUserStatement.setString(3, u.getUsername());
-            editUserStatement.setString(4, u.getEmail());
-            editUserStatement.setInt(5, id);
+            editUserStatement.setString(4, Digester.hashWithSalt(u.getPassword()));
+            editUserStatement.setString(5, u.getEmail());
+            editUserStatement.setInt(6, id);
 
             editUserStatement.executeUpdate();
         } catch (SQLException e) {
