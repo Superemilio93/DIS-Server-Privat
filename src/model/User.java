@@ -13,10 +13,6 @@ public class User {
 
     }
 
-   /* public User(int userID){
-        this.userID = userID;
-
-    }*/
     public User(String firstName, String lastName, String userName, String email, String password, int userType) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -91,16 +87,7 @@ public class User {
         this.userType = userType;
     }
 
-    /*
-    @Override
-    public String toString() {
-        return "User{" +
-                "userID=" + userID +
-                ", name='" + firstName + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }*/
+
 }
 
 

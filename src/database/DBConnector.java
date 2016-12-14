@@ -81,9 +81,6 @@ public class DBConnector {
                             resultSet.getInt("Usertype")
                     );
 
-                   // User user = new User();
-                   // user.setEmail(resultSet.getString("Email"));
-
                     results.add(users);
 
                 } catch (Exception e) {

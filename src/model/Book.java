@@ -111,12 +111,5 @@ public class Book {
         this.priceCDON = priceCDON;
     }
 
-    //    @Override
-//    public String toString() {
-//        return "model.Book{" +
-//                "name='" + name + '\'' +
-//                ", publisher='" + publisher + '\'' +
-//                ", ISBN='" + ISBN + '\'' +
-//                '}';
-//    }
+
 }
